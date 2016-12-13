@@ -3,13 +3,20 @@ import { Link } from 'react-router';
 
 const Header = () => {
   return (
-    <div className="header clearfix">
-      <h2 className="pull-left">Jardin</h2>
-      <div className="pull-right">
-        <Link to="/signup">Sign up</Link>
-        <Link to="/login">Log in</Link>
+    <nav className="navbar navbar-default">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <a className="navbar-brand" href="#">Jardin</a>
+        </div>
+
+        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul className="nav navbar-nav navbar-right">
+            <li><Link to="/signup">Sign up</Link></li>
+            <li><Link to="/login">Log in</Link></li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
 

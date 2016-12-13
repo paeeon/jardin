@@ -8,8 +8,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Header />
         <div className="container">
-          <Header />
           {this.props.children}
         </div>
       </div>
