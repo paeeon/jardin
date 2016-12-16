@@ -9,7 +9,7 @@ export default class SignUp extends Component {
       pass: '',
       confirmPass: '',
       passwordTooShort: false,
-      passwordsDontMatch: false
+      passwordsMatch: true
     };
   }
 
@@ -35,18 +35,18 @@ export default class SignUp extends Component {
     if (this.state.pass !== this.state.confirmPass) {
       this.setState({
         ...this.state,
-        passwordsDontMatch: true
+        passwordsMatch: false
       });
     } else {
       this.setState({
         ...this.state,
-        passwordsDontMatch: false
+        passwordsMatch: true
       });
     }
   }
 
-  handleSubmit = () => {
-
+  handleSubmit = (e) => {
+    e.preventDefault();
   }
 
   render() {
@@ -102,9 +102,8 @@ export default class SignUp extends Component {
                        this.setStateDone
                      )}
                    }
-                   onBlur={this.passwordMatchCheck}
                    />
-                 { this.state.passwordsDontMatch ? <span>Your passwords dont match.. Try again?</span> : null }
+                 { this.state.passwordsMatch ? null : <span>Your passwords dont match.. Try again?</span> }
           </div>
 
           <button type="submit" className={submitClass} onClick={this.handleSubmit}>Submit</button>
