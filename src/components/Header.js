@@ -6,7 +6,7 @@ const Header = () => {
     <nav className="navbar navbar-default">
       <div className="container-fluid">
         <div className="navbar-header">
-          <a className="navbar-brand" href="#">Jardin</a>
+          <Link to="/" className="navbar-brand">Jardin</Link>
         </div>
 
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

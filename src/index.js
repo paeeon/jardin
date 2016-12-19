@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.css';
-import { Route, Router, IndexRoute, browserHistory} from 'react-router';
+import { Route, Router, IndexRoute, browserHistory } from 'react-router';
 import * as firebase from 'firebase';
 
 import App from './containers/App';
 import Home from './containers/Home';
 import SignUp from './containers/SignUp';
+import Dashboard from './containers/Dashboard';
 
 const config = {
   apiKey: "AIzaSyB7Rlj9IdHF3zBi-NSJlCYWX0GecMMWlXA",
@@ -17,12 +18,16 @@ const config = {
 };
 firebase.initializeApp(config);
 
-ReactDOM.render(
+const requireAuth = () => {}
+
+const router = (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/dashboard" component={Dashboard} onEnter={requireAuth}/>
     </Route>
-  </Router>,
-  document.getElementById('root')
+  </Router>
 );
+
+ReactDOM.render(router,document.getElementById('root'));

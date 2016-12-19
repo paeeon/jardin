@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import '../styles/SignUp.css'
 import classNames from 'classnames';
+import firebase from 'firebase';
 
 export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: '',
       pass: '',
       confirmPass: '',
       passwordTooShort: false,
-      passwordsMatch: true
+      passwordsMatch: true,
+      error: ''
     };
   }
 
@@ -31,22 +34,40 @@ export default class SignUp extends Component {
     }
   }
 
-  passwordMatchCheck = () => {
-    if (this.state.pass !== this.state.confirmPass) {
-      this.setState({
-        ...this.state,
-        passwordsMatch: false
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        passwordsMatch: true
-      });
+  timedPassParityCheck = () => {
+    if (this.state.confirmPass) {
+      const checkPasswords = () => {
+        if (timer) clearTimeout(timer);
+        if (this.state.confirmPass !== this.state.pass) {
+          this.setState({
+            ...this.state,
+            passwordsMatch: false
+          })
+        } else {
+          this.setState({
+            ...this.state,
+            passwordsMatch: true
+          })
+        }
+      }
+      const timer = setTimeout(checkPasswords, 1000);
     }
+  }
+
+  onChangeHandler = (e) => {
+    this.setState(
+      {...this.state, [e.target.name]: e.target.value},
+      this.setStateDone
+    )
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.pass)
+      .then((user) => {
+        this.context.router.push('/dashboard/' + user.uid);
+      })
+      .catch((err) => console.log(err.code, err.message));
   }
 
   render() {
@@ -61,6 +82,7 @@ export default class SignUp extends Component {
     const submitClass = classNames({
       'btn': true,
       'btn-default': true,
+      'disabled': !this.state.email || this.state.passwordTooShort || !this.state.passwordsMatch
     });
     return (
       <div className="sign-up">
@@ -71,7 +93,9 @@ export default class SignUp extends Component {
             <input type="email"
                    className="form-control"
                    id="email"
-                   placeholder="janedoe@gmail.com" />
+                   name="email"
+                   placeholder="janedoe@gmail.com"
+                   onChange={this.onChangeHandler} />
           </div>
 
           <div className="form-group">
@@ -80,13 +104,10 @@ export default class SignUp extends Component {
                    id="password"
                    placeholder="8 character minimum"
                    className={passwordClass}
-                   onChange={(e) => {
-                     this.setState(
-                       {...this.state, pass: e.target.value},
-                       this.setStateDone
-                     )}
-                   }
-                   onBlur={this.checkPasswordLength} />
+                   name="pass"
+                   onChange={this.onChangeHandler}
+                   onBlur={this.checkPasswordLength}
+                   onKeyUp={this.timedPassParityCheck}/>
             { this.state.passwordTooShort ? <span>Password needs to be at least 8 characters long.</span> : null }
           </div>
 
@@ -95,13 +116,10 @@ export default class SignUp extends Component {
             <input type="password"
                    className={passwordConfirmClass}
                    id="password-confirm"
+                   name="confirmPass"
                    placeholder="Type it in again"
-                   onChange={(e) => {
-                     this.setState(
-                       {...this.state, confirmPass: e.target.value},
-                       this.setStateDone
-                     )}
-                   }
+                   onChange={this.onChangeHandler}
+                   onKeyUp={this.timedPassParityCheck}
                    />
                  { this.state.passwordsMatch ? null : <span>Your passwords dont match.. Try again?</span> }
           </div>
@@ -112,3 +130,7 @@ export default class SignUp extends Component {
     );
   }
 }
+
+SignUp.contextTypes = {
+  router: React.PropTypes.object
+};
