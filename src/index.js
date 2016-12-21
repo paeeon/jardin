@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
-import { Route, Router, IndexRoute, browserHistory } from 'react-router';
 import * as firebase from 'firebase';
-
-import App from './containers/App';
-import Home from './containers/Home';
-import SignUp from './containers/SignUp';
-import Dashboard from './containers/Dashboard';
+import router from './router';
+import { createStore } from 'redux';
+import rootReducer from './reducers/rootReducer';
+import { Provider } from 'react-redux';
 
 const config = {
   apiKey: "AIzaSyB7Rlj9IdHF3zBi-NSJlCYWX0GecMMWlXA",
@@ -18,16 +15,9 @@ const config = {
 };
 firebase.initializeApp(config);
 
-const requireAuth = () => {}
+let store = createStore(rootReducer);
 
-const router = (
-  <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Home} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/dashboard" component={Dashboard} onEnter={requireAuth}/>
-    </Route>
-  </Router>
-);
-
-ReactDOM.render(router,document.getElementById('root'));
+ReactDOM.render(
+<Provider store={store}>
+  {router}
+</Provider>,document.getElementById('root'));

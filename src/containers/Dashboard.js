@@ -7,13 +7,14 @@ export default class Dashboard extends Component {
     this.state = {};
   }
 
+  logState = () => console.log('current state', this.state);
+
   render() {
     return (
       <div className="dashboard">
         Dashboard
-        {/* { this.state.user !== null ?
-          <div className="user-email">{this.state.user.email}</div> :
-          null } */}
+        { this.state.user ?
+          <div className="user-email">{this.state.user.email}</div> : null }
       </div>
     )
   }
