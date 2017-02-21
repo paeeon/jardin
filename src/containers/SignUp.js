@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import '../styles/SignUp.css'
 import classNames from 'classnames';
-import firebase from 'firebase';
+import { connect } from 'react-redux';
+import { createNewUser } from '../actions/user';
 
-export default class SignUp extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
+      firstName: '',
+      lastName: '',
       pass: '',
       confirmPass: '',
       passwordTooShort: false,
@@ -36,6 +39,7 @@ export default class SignUp extends Component {
 
   timedPassParityCheck = () => {
     if (this.state.confirmPass) {
+      let timer;
       const checkPasswords = () => {
         if (timer) clearTimeout(timer);
         if (this.state.confirmPass !== this.state.pass) {
@@ -50,7 +54,7 @@ export default class SignUp extends Component {
           })
         }
       }
-      const timer = setTimeout(checkPasswords, 1000);
+      timer = setTimeout(checkPasswords, 1000);
     }
   }
 
@@ -63,11 +67,15 @@ export default class SignUp extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.pass)
-      .then((user) => {
-        this.context.router.push('/dashboard/' + user.uid);
-      })
-      .catch((err) => console.log(err.code, err.message));
+    const userData = {
+      email: this.state.email,
+      pass: this.state.pass,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
+    };
+    createNewUser(userData).then((results) => {
+      console.log("user created", results)
+    })
   }
 
   render() {
@@ -81,7 +89,8 @@ export default class SignUp extends Component {
     });
     const submitClass = classNames({
       'btn': true,
-      'btn-default': true,
+      'btn-primary': true,
+      'btn-block': true,
       'disabled': !this.state.email || this.state.passwordTooShort || !this.state.passwordsMatch
     });
     return (
@@ -95,6 +104,26 @@ export default class SignUp extends Component {
                    id="email"
                    name="email"
                    placeholder="janedoe@gmail.com"
+                   onChange={this.onChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">First Name</label>
+            <input type="first-name"
+                   className="form-control"
+                   id="first-name"
+                   name="firstName"
+                   placeholder="Jane"
+                   onChange={this.onChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Last Name</label>
+            <input type="last-name"
+                   className="form-control"
+                   id="last-name"
+                   name="lastName"
+                   placeholder="Doe"
                    onChange={this.onChangeHandler} />
           </div>
 
@@ -131,6 +160,13 @@ export default class SignUp extends Component {
   }
 }
 
-SignUp.contextTypes = {
-  router: React.PropTypes.object
+const mapDispatchToProps = {
+  createNewUser
 };
+
+SignUp = connect(
+  null,
+  mapDispatchToProps
+)(SignUp);
+
+export default SignUp;

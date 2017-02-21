@@ -8,9 +8,8 @@ const Header = () => {
         <div className="navbar-header">
           <Link to="/" className="navbar-brand">Jardin</Link>
         </div>
-
-        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul className="nav navbar-nav navbar-right">
+        <div className="nav">
+          <ul className="nav navbar-nav">
             <li><Link to="/signup">Sign up</Link></li>
             <li><Link to="/login">Log in</Link></li>
           </ul>
