@@ -73,9 +73,12 @@ class SignUp extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName
     };
-    createNewUser(userData).then((results) => {
-      console.log("user created", results)
-    })
+    createNewUser(userData)
+      .then((results) => {
+        console.log("user created", results);
+      }).catch((error) => {
+        console.error("error happened", error);
+      });
   }
 
   render() {
