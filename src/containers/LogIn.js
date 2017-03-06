@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-// import firebase from 'firebase';
+import { connect } from 'react-redux';
+import { loginUser } from '../actions/user';
 
-export default class LogIn extends Component {
+class LogIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,12 +13,17 @@ export default class LogIn extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    
+    loginUser(this.state);
+  }
+
+  setStateDone = () => {
+    console.log('current state', this.state);
   }
 
   onChangeHandler = (e) => {
     this.setState(
-      {...this.state, [e.target.name]: e.target.value }
+      {...this.state, [e.target.name]: e.target.value },
+      this.setStateDone
     );
   }
 
@@ -30,7 +36,8 @@ export default class LogIn extends Component {
             <input type="email"
                    className="form-control"
                    id="email"
-                   name="email" />
+                   name="email"
+                   onChange={this.onChangeHandler} />
           </div>
 
           <div className="form-group">
@@ -38,7 +45,8 @@ export default class LogIn extends Component {
             <input type="password"
                    className="form-control"
                    name="pass"
-                   id="password"/>
+                   id="password"
+                   onChange={this.onChangeHandler} />
           </div>
 
           <button type="submit"
@@ -52,3 +60,14 @@ export default class LogIn extends Component {
     );
   }
 }
+
+const mapDispatchToProps = {
+  loginUser
+}
+
+LogIn = connect(
+  null,
+  mapDispatchToProps
+)(LogIn);
+
+export default LogIn;

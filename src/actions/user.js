@@ -4,7 +4,9 @@ const serverUrl = 'http://localhost:1337';
 
 export function createNewUser(user) {
   return got.post(`${serverUrl}/users/register`, {body: user})
-    .then(logResponse)
+    .then(function(response) {
+      return response;
+    })
     .catch(handleError)
 }
 

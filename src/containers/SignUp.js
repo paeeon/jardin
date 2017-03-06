@@ -10,7 +10,6 @@ class SignUp extends Component {
     this.state = {
       email: '',
       firstName: '',
-      lastName: '',
       pass: '',
       confirmPass: '',
       passwordTooShort: false,
@@ -70,8 +69,7 @@ class SignUp extends Component {
     const userData = {
       email: this.state.email,
       pass: this.state.pass,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName
+      firstName: this.state.firstName
     };
     createNewUser(userData)
       .then((results) => {
@@ -117,16 +115,6 @@ class SignUp extends Component {
                    id="first-name"
                    name="firstName"
                    placeholder="Jane"
-                   onChange={this.onChangeHandler} />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">Last Name</label>
-            <input type="last-name"
-                   className="form-control"
-                   id="last-name"
-                   name="lastName"
-                   placeholder="Doe"
                    onChange={this.onChangeHandler} />
           </div>
 
