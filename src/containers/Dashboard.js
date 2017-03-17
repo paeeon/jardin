@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
-    var user = firebase.auth().currentUser;
-    this.state = {
-      user
-    };
+    // TO DO: perform an auth check??
   }
 
   logState = () => console.log('current state', this.state);
@@ -16,8 +12,6 @@ export default class Dashboard extends Component {
     return (
       <div className="dashboard">
         Dashboard
-        { this.state.user ?
-          <div className="user-email">{this.state.user.email}</div> : null }
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { loginUser } from '../actions/user';
 
@@ -13,7 +14,8 @@ class LogIn extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    loginUser(this.state);
+    loginUser(this.state)
+      .then(() => { browserHistory.push('/dashboard'); });
   }
 
   setStateDone = () => {
