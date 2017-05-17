@@ -2,6 +2,7 @@ import got from 'got';
 
 const serverUrl = 'http://localhost:1337';
 
+// Create new user
 export function createNewUser(user) {
   return got.post(`${serverUrl}/users/register`, {body: user})
     .then(function(response) {
@@ -9,6 +10,7 @@ export function createNewUser(user) {
     }).catch(handleError)
 }
 
+// Log in user
 export function loginUser(user) {
   return got.post(`${serverUrl}/users/login`, {body: user})
     .then((response) => {
@@ -16,6 +18,27 @@ export function loginUser(user) {
         localStorage.setItem('jwt', response.body);
       }
     }).catch(handleError)
+}
+
+// Check JWT Validity and Expiration
+export function checkToken() {
+  let token = localStorage.getItem('jwt');
+  console.log('here\'s the token:', token);
+  console.log(`here's the URL we're sending the token to: `, `${serverUrl}/users/verify`)
+  if (token) {
+    return got.get(`${serverUrl}/users/verify`, {
+      headers: {
+        'Access-Control-Request-Method': 'GET',
+        'Access-Control-Request-Headers': 'Authorization',
+        'Authorization': `Bearer ${token}`,
+      }
+    }).then(function(response) {
+        console.log(response.body);
+        return response.body;
+      }).catch(handleError);
+  } else {
+    console.log('No JWT to verify!');
+  }
 }
 
 function logResponse(response) {

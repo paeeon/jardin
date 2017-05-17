@@ -1,4 +1,7 @@
-export default function user(state = {}, action) {
+export default function user(state = {
+  isFetching: false,
+  isAuthenticated: localStorage.getItem('jwt') ? true : false
+}, action) {
   switch (action.type) {
     case 'CREATE_USER':
 
