@@ -20,6 +20,16 @@ export function loginUser(user) {
     }).catch(handleError)
 }
 
+// Log out user
+export function logoutUser(user) {
+  return got.patch(`${serverUrl}/users/logout`, {body: user})
+    .then((response) => {
+      if (storageAvailable('localStorage')) {
+        localStorage.removeItem('jwt');
+      }
+    }).catch(handleError)
+}
+
 // Check JWT Validity and Expiration
 export function checkToken() {
   let token = localStorage.getItem('jwt');
