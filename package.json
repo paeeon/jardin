@@ -5,6 +5,7 @@
   "description": "A text-based choose your own adventure platform.",
   "devDependencies": {
     "got": "^6.7.1",
+    "morgan": "^1.8.1",
     "react-scripts": "0.8.4"
   },
   "dependencies": {

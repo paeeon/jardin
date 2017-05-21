@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { loginUser } from '../actions/user';
+import { loginUserWithDispatch } from '../actions/user';
 
 class LogIn extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class LogIn extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    loginUser(this.state)
+    this.props.loginUser(this.state)
       .then(() => { browserHistory.push('/dashboard'); });
   }
 
@@ -63,8 +63,10 @@ class LogIn extends Component {
   }
 }
 
-const mapDispatchToProps = {
-  loginUser
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUser: (state) => loginUserWithDispatch(dispatch, state)
+  }
 }
 
 LogIn = connect(

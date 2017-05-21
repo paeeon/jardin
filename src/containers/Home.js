@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { checkTokenWithDispatch } from '../actions/user';
+import { browserHistory } from 'react-router';
 
-export default class Home extends Component {
+class Home extends Component {
+  componentWillMount() {
+    this.props.checkToken
+      .then((response) => {
+        if (response.statusCode === 200) browserHistory.push('/dashboard');
+      });
+  }
+
   render() {
     return (
       <div className="home">
@@ -22,3 +32,16 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    checkToken: checkTokenWithDispatch(dispatch)
+  };
+}
+
+Home = connect(
+  null,
+  mapDispatchToProps
+)(Home);
+
+export default Home;

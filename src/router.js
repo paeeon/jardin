@@ -6,6 +6,7 @@ import App from './containers/App';
 import Home from './containers/Home';
 import SignUp from './containers/SignUp';
 import LogIn from './containers/LogIn';
+import LogOut from './containers/LogOut';
 import Dashboard from './containers/Dashboard';
 
 const router = (
@@ -14,6 +15,7 @@ const router = (
       <IndexRoute component={Home} />
       <Route path="/signup" component={SignUp} />
       <Route path="/login" component={LogIn} />
+      <Route path="/logout" component={LogOut} />
       <Route path="/dashboard" component={Dashboard} />
     </Route>
   </Router>

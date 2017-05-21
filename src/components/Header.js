@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Header = () => {
+const Header = ({navLinks}) => {
   return (
     <nav className="navbar navbar-default">
       <div className="container-fluid">
@@ -10,8 +10,9 @@ const Header = () => {
         </div>
         <div className="nav">
           <ul className="nav navbar-nav">
-            <li><Link to="/signup">Sign up</Link></li>
-            <li><Link to="/login">Log in</Link></li>
+          {navLinks.map((link) => {
+            return (<li key={link.id}><Link to={link.route}>{link.text}</Link></li>);
+          })}
           </ul>
         </div>
       </div>
