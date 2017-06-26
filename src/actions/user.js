@@ -58,8 +58,9 @@ export function checkTokenWithDispatch(dispatch) {
         return response;
       }).catch(handleError);
   } else {
+    // there's no token!
     console.log('No JWT to verify!');
-    return redirectUser(loginRoute);
+    return Promise.resolve({statusCode: 400});
   }
 }
 
