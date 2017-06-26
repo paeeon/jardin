@@ -53,7 +53,7 @@ export function checkTokenWithDispatch(dispatch) {
         console.log(`Full response: `, response);
         if (response.statusCode === 400) return redirectUser(loginRoute);
         // If you make it here, that means that the user is logged in
-        // Save the users' info on Redux
+        // Save the users' info on Redux if it's not already there
         dispatch(loginUser(decodeJwt(token)));
         return response;
       }).catch(handleError);

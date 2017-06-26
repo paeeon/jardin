@@ -2,26 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { checkTokenWithDispatch } from '../actions/user';
-import { browserHistory } from 'react-router';
 
 class Home extends Component {
-  componentWillMount() {
-    this.props.checkToken
-      .then((response) => {
-        if (response.statusCode === 200) browserHistory.push('/dashboard');
-      });
-  }
-
   render() {
     return (
       <div className="home">
-        <h3>What is Jardin?</h3>
-        <p>This new tree is now the next state of your app! Every listener
-        registered with store.subscribe(listener) will now be invoked;
-        listeners may call store.getState() to get the current state.
-        Now, the UI can be updated to reflect the new state. If you use
-        bindings like React Redux, this is the point at which
-        component.setState(newState) is called.</p>
+        <h3>Choose your own adventure.</h3>
+        <p>
+          Jardin is a place to play interactive stories via our app, or text
+          message. Or, write your own stories for others to play.
+        </p>
         <p className="text-center">
           <Link to="/signup">
             <button className="btn btn-primary">Sign up now!</button>
