@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { loginUserWithDispatch } from '../actions/user';
+import { loginUserThunk } from '../actions/user';
 
 class LogIn extends Component {
   constructor(props) {
@@ -65,7 +65,7 @@ class LogIn extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: (state) => loginUserWithDispatch(dispatch, state)
+    loginUser: (state) => dispatch(loginUserThunk(state))
   }
 }
 

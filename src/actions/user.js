@@ -13,23 +13,29 @@ export function createNewUser(user) {
     }).catch(handleError)
 }
 
-// Log in user
-export function loginUserWithDispatch(dispatch, user) {
-  return got.post(`${serverUrl}/users/login`, {body: user})
-    .then((response) => {
-      let jwt = response.body;
-      if (storageAvailable('localStorage')) localStorage.setItem('jwt', jwt);
-      dispatch(loginUser(decodeJwt(jwt)));
-    }).catch(handleError);
+// Log in user Thunk
+export function loginUserThunk(user) {
+  console.log("Here is the user:");
+  console.log(user);
+  return dispatch => {
+    return got.post(`${serverUrl}/users/login`, {body: user})
+      .then(response => {
+        let jwt = response.body;
+        if (storageAvailable('localStorage')) localStorage.setItem('jwt', jwt);
+        dispatch(loginUser(decodeJwt(jwt)));
+      }).catch(handleError);
+  };
 }
 
-// Log out user
-export function logoutUserWithDispatch(dispatch, userId) {
-  return got.patch(`${serverUrl}/users/logout/${userId}`)
-    .then((response) => {
-      if (storageAvailable('localStorage')) localStorage.removeItem('jwt');
-      dispatch(logoutUser());
-    }).catch(handleError)
+// Log out user Thunk
+export function logoutUserThunk() {
+  return (dispatch, getState) => {
+    return got.patch(`${serverUrl}/users/logout/${getState().user.id}`)
+      .then((response) => {
+        if (storageAvailable('localStorage')) localStorage.removeItem('jwt');
+        dispatch(logoutUser());
+      }).catch(handleError);
+  };
 }
 
 // Check JWT Validity and Expiration

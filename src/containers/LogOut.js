@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { logoutUserWithDispatch } from '../actions/user';
+import { logoutUserThunk } from '../actions/user';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
@@ -10,7 +10,7 @@ class LogOut extends Component {
       .then(() => {
         console.log(`User was logged out.`);
         browserHistory.push('/');
-      } )
+      })
     } else {
       console.log(`No one was logged in, so we couldn't log them out!`);
       browserHistory.push('/');
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logoutUser: (user) => logoutUserWithDispatch(dispatch, user.id)
+    logoutUser: () => dispatch(logoutUserThunk())
   }
 }
 
