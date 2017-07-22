@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUserThunk } from '../actions/user';
 
@@ -15,7 +15,7 @@ class LogIn extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.loginUser(this.state)
-      .then(() => { browserHistory.push('/dashboard'); });
+      .then(() => { this.props.history.push('/dashboard'); });
   }
 
   setStateDone = () => {
@@ -69,9 +69,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-LogIn = connect(
+LogIn = withRouter(connect(
   null,
   mapDispatchToProps
-)(LogIn);
+)(LogIn));
 
 export default LogIn;

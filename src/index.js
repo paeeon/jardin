@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import router from './router';
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers/rootReducer';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import App from './containers/App';
+import { BrowserRouter } from 'react-router-dom';
 
 let store = createStore(
   rootReducer,
@@ -14,5 +15,7 @@ let store = createStore(
 
 ReactDOM.render(
 <Provider store={store}>
-  {router}
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 </Provider>,document.getElementById('root'));

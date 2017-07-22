@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { logoutUserThunk } from '../actions/user';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
 class LogOut extends Component {
   componentWillMount() {
@@ -9,11 +9,11 @@ class LogOut extends Component {
       this.props.logoutUser(this.props.user)
       .then(() => {
         console.log(`User was logged out.`);
-        browserHistory.push('/');
+        this.props.history.push('/');
       })
     } else {
       console.log(`No one was logged in, so we couldn't log them out!`);
-      browserHistory.push('/');
+      this.props.history.push('/');
     }
   }
 
@@ -36,9 +36,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-LogOut = connect(
+LogOut = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(LogOut);
+)(LogOut));
 
 export default LogOut;
