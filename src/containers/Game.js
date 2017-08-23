@@ -13,7 +13,7 @@ class Game extends Component {
     return (
       <div className="dashboard">
         <h1>Game</h1>
-
+        Test
       </div>
     );
   }

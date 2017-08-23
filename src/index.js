@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers/rootReducer';
 import { Provider } from 'react-redux';
@@ -16,4 +15,5 @@ let store = createStore(
 ReactDOM.render(
 <Provider store={store}>
   <App />
-</Provider>,document.getElementById('root'));
+</Provider>,
+document.getElementById('root'));

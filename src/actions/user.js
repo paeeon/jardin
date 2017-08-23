@@ -40,7 +40,8 @@ export function logoutUserThunk() {
 // decode token and then check if token is still valid and unexpired
 // if token is valid and unexpired, continue loading page
 // if token is invalid, redirect to login page
-export function checkTokenThunk() {
+export function checkTokenValidityThunk() {
+  console.log("checkTokenValidityThunk ran!");
   return dispatch => {
     let token = localStorage.getItem('jwt');
     console.log('here\'s the token:', token);

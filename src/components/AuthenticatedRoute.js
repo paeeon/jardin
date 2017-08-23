@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 export default function AuthenticatedRoute ({
@@ -6,7 +6,6 @@ export default function AuthenticatedRoute ({
   isAuthenticated,
   ...rest
 }) {
-  console.log("isAuthenticated", isAuthenticated);
   return (
     <Route
       {...rest}

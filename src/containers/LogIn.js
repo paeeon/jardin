@@ -17,12 +17,14 @@ class LogIn extends Component {
     e.preventDefault();
     this.props.loginUser({email: this.state.email, pass: this.state.pass})
       .then(response => {
-        if (response.statusCode === 400) {
+        if (response && response.statusCode === 400) {
           this.setState({...this.state, error: "Hmm, you sure you got the right email and password?"});
           return;
         }
         this.props.history.push('/dashboard');
-      }).catch(response => console.error("Error in handleSubmit in LogIn component!"));
+      }).catch(response => {
+        console.error("Error in handleSubmit in LogIn component!", response);
+      });
   }
 
   setStateDone = () => {
@@ -75,7 +77,7 @@ class LogIn extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: (user) => dispatch(loginUserThunk(user))
+    loginUser: (user) => dispatch(loginUserThunk())
   }
 }
 
