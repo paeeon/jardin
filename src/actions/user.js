@@ -1,9 +1,7 @@
 import got from 'got';
-import { browserHistory } from 'react-router';
 import jwtDecode from 'jwt-decode';
 
 const serverUrl = 'http://localhost:1337';
-const loginRoute = '/login';
 
 // Create new user
 export function createNewUser(user) {
@@ -22,7 +20,7 @@ export function loginUserThunk(user) {
       .then(response => {
         let jwt = response.body;
         if (storageAvailable('localStorage')) localStorage.setItem('jwt', jwt);
-        dispatch(loginUser(decodeJwt(jwt)));
+        dispatch(loginUserAction(decodeJwt(jwt)));
       }).catch(handleError);
   };
 }
@@ -33,7 +31,7 @@ export function logoutUserThunk() {
     return got.patch(`${serverUrl}/users/logout/${getState().user.id}`)
       .then((response) => {
         if (storageAvailable('localStorage')) localStorage.removeItem('jwt');
-        dispatch(logoutUser());
+        dispatch(logoutUserAction());
       }).catch(handleError);
   };
 }
@@ -42,37 +40,39 @@ export function logoutUserThunk() {
 // decode token and then check if token is still valid and unexpired
 // if token is valid and unexpired, continue loading page
 // if token is invalid, redirect to login page
-export function checkTokenWithDispatch(dispatch) {
-  let token = localStorage.getItem('jwt');
-  console.log('here\'s the token:', token);
-  console.log(`here's the URL we're sending the token to: `, `${serverUrl}/users/verify`)
-  if (token) {
-    return got.get(`${serverUrl}/users/verify`, {
-      headers: {
-        'Access-Control-Request-Method': 'GET',
-        'Access-Control-Request-Headers': 'Authorization',
-        'Authorization': `Bearer ${token}`,
-      }
-    }).then(function(response) {
-        console.log(`Results of JWT check:`);
-        console.log(response.statusCode, response.statusMessage);
-        console.log(`Full response: `, response);
-        if (response.statusCode === 400) return redirectUser(loginRoute);
-        // If you make it here, that means that the user is logged in
-        // Save the users' info on Redux
-        dispatch(loginUser(decodeJwt(token)));
-        return response;
-      }).catch(handleError);
-  } else {
-    // there's no token!
-    console.log('No JWT to verify!');
-    return Promise.resolve({statusCode: 400});
+export function checkTokenThunk() {
+  return dispatch => {
+    let token = localStorage.getItem('jwt');
+    console.log('here\'s the token:', token);
+    console.log(`here's the URL we're sending the token to: `, `${serverUrl}/users/verify`)
+    if (token) {
+      return got.get(`${serverUrl}/users/verify`, {
+        headers: {
+          'Access-Control-Request-Method': 'GET',
+          'Access-Control-Request-Headers': 'Authorization',
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then(function(response) {
+          console.log(`Results of JWT check:`);
+          console.log(response.statusCode, response.statusMessage);
+          console.log(`Full response: `, response);
+          if (response.statusCode === 400) return response;
+          // If you make it here, that means that the user is logged in
+          // Save the users' info on Redux
+          dispatch(loginUserAction(decodeJwt(token)));
+          return response;
+        }).catch(handleError);
+    } else {
+      // there's no token!
+      console.log('No JWT to verify!');
+      return Promise.resolve({statusCode: 400});
+    }
   }
 }
 
-// Helper Functions
+// ***** Helper Functions *****
 
-function loginUser(decodedJwt) {
+function loginUserAction(decodedJwt) {
   return {
     type: 'LOG_IN',
     payload: {
@@ -83,7 +83,7 @@ function loginUser(decodedJwt) {
   }
 }
 
-function logoutUser() {
+function logoutUserAction() {
   return {
     type: 'LOG_OUT'
   }
@@ -93,10 +93,6 @@ function decodeJwt(jwt) {
   const decodedJwt = jwtDecode(jwt);
   console.log('Decoded JWT', decodedJwt);
   return decodedJwt;
-}
-
-function redirectUser(redirectLocation) {
-  return browserHistory.push(redirectLocation);
 }
 
 function handleError(error) {

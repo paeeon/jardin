@@ -8,13 +8,14 @@ const getVisibleNavLinks = (userState) => {
 
   if (userState.isAuthenticated) {
     return [
-      {id: '1', route: '/dashboard', text: 'Dashboard'},
+      {id: '0', route: '/dashboard', text: 'Dashboard'},
+      {id: '1', route: '/game-list', text: 'Game List'},
       {id: '2', route: '/logout', text: 'Log Out'}
     ];
   } else {
     return [
-      {id: '1', route: '/signup', text: 'Sign Up'},
-      {id: '2', route: '/login', text: 'Log In'}
+      {id: '0', route: '/signup', text: 'Sign Up'},
+      {id: '1', route: '/login', text: 'Log In'}
     ];
   }
 

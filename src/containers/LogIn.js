@@ -8,14 +8,21 @@ class LogIn extends Component {
     super(props);
     this.state = {
       email: '',
-      pass: ''
+      pass: '',
+      error: null
     };
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.loginUser(this.state)
-      .then(() => { this.props.history.push('/dashboard'); });
+    this.props.loginUser({email: this.state.email, pass: this.state.pass})
+      .then(response => {
+        if (response.statusCode === 400) {
+          this.setState({...this.state, error: "Hmm, you sure you got the right email and password?"});
+          return;
+        }
+        this.props.history.push('/dashboard');
+      }).catch(response => console.error("Error in handleSubmit in LogIn component!"));
   }
 
   setStateDone = () => {
@@ -24,7 +31,10 @@ class LogIn extends Component {
 
   onChangeHandler = (e) => {
     this.setState(
-      {...this.state, [e.target.name]: e.target.value },
+      {
+        ...this.state,
+        [e.target.name]: e.target.value
+      },
       this.setStateDone
     );
   }
@@ -65,7 +75,7 @@ class LogIn extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: (state) => dispatch(loginUserThunk(state))
+    loginUser: (user) => dispatch(loginUserThunk(user))
   }
 }
 

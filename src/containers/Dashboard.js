@@ -1,26 +1,17 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { checkTokenWithDispatch } from '../actions/user';
+import { Link } from 'react-router-dom';
 
 class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
         <h1>Dashboard</h1>
+        <Link to="/game/">
+          <button className="btn">Create a New Game</button>
+        </Link>
       </div>
     );
   }
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    checkToken: checkTokenWithDispatch(dispatch)
-  };
-}
-
-Dashboard = connect(
-  null,
-  mapDispatchToProps
-)(Dashboard);
 
 export default Dashboard;

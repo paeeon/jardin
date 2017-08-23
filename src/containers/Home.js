@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { checkTokenWithDispatch } from '../actions/user';
 
 class Home extends Component {
   render() {
@@ -22,16 +20,5 @@ class Home extends Component {
     );
   }
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    checkToken: checkTokenWithDispatch(dispatch)
-  };
-}
-
-Home = connect(
-  null,
-  mapDispatchToProps
-)(Home);
 
 export default Home;
