@@ -43,6 +43,7 @@ export function logoutUserThunk() {
 export function checkTokenValidityThunk() {
   console.log("checkTokenValidityThunk ran!");
   return dispatch => {
+    dispatch(fetchAuthRequestAction());
     let token = localStorage.getItem('jwt');
     console.log('here\'s the token:', token);
     console.log(`here's the URL we're sending the token to: `, `${serverUrl}/users/verify`)
@@ -61,13 +62,36 @@ export function checkTokenValidityThunk() {
           // If you make it here, that means that the user is logged in
           // Save the users' info on Redux
           dispatch(loginUserAction(decodeJwt(token)));
+          dispatch(fetchAuthSuccessAction());
           return response;
-        }).catch(handleError);
+        }).catch(function(error) {
+          handleError(error);
+          dispatch(fetchAuthFailAction());
+        });
     } else {
+      dispatch(fetchAuthSuccessAction());
       // there's no token!
       console.log('No JWT to verify!');
       return Promise.resolve({statusCode: 400});
     }
+  }
+}
+
+export function fetchAuthRequestAction() {
+  return {
+    type: 'FETCH_AUTH_REQUEST'
+  }
+}
+
+export function fetchAuthSuccessAction() {
+  return {
+    type: 'FETCH_AUTH_SUCCESS'
+  }
+}
+
+export function fetchAuthFailAction() {
+  return {
+    type: 'FETCH_AUTH_FAIL'
   }
 }
 

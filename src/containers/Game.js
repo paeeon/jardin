@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import { updateGame } from '../actions/game';
 
 class Game extends Component {
-  componentWillMount() {
-
-    console.log("componentWillMount render");
-  }
-
   render() {
     console.log("Rendering!");
     return (

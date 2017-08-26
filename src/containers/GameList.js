@@ -8,7 +8,7 @@ class GameList extends Component {
   render() {
     return (
       <div className="home">
-        <h3>Game List</h3>
+        <h1>Game List</h1>
         <p>
           Jardin is a place to play interactive stories via our app, or text
           message. Or, write your own stories for others to play.

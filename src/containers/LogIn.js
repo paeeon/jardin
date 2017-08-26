@@ -77,7 +77,7 @@ class LogIn extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: (user) => dispatch(loginUserThunk())
+    loginUser: (user) => dispatch(loginUserThunk(user))
   }
 }
 

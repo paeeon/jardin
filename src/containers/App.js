@@ -29,8 +29,16 @@ class App extends Component {
             <Route path='/signup' component={SignUp}/>
             <Route path='/login' component={LogIn}/>
             <Route path='/logout' component={LogOut}/>
-            <AuthenticatedRoute path='/dashboard' component={Dashboard} isAuthenticated={this.props.isAuthenticated}/>
-            <AuthenticatedRoute path='/game-list' component={GameList} isAuthenticated={this.props.isAuthenticated}/>
+            <AuthenticatedRoute
+              path='/dashboard'
+              component={Dashboard}
+              isFetching={this.props.isFetching}
+              isAuthenticated={this.props.isAuthenticated}/>
+            <AuthenticatedRoute
+              path='/game-list'
+              component={GameList}
+              isFetching={this.props.isFetching}
+              isAuthenticated={this.props.isAuthenticated}/>
             <Route path='/game' component={Game}/>
           </div>
         </div>
@@ -41,6 +49,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    isFetching: state.user.isFetching,
     isAuthenticated: state.user.isAuthenticated
   }
 };
